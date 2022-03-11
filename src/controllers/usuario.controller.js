@@ -81,16 +81,54 @@ function Login(req, res){
 function EditarUsuario(req,res){
     var idUser = req.params.idUsuario;
     var parametros = req.body;
-    
-
-    if(idUser !== req.user.sub) return res.status(500).send({mensaje: 'no puede editar otros usuarios'});
-    Usuarios.findByIdAndUpdate(req.user.sub, parametros,{new:true}, (err, usuarioActualizado) =>{
+   
+     if( idUser !== req.user.idUsuario, req.user.rol !== "ADMIN" ) return res.status(500).send({mensaje: 'no puede editar otros usuarios'});
+     Usuarios.findByIdAndUpdate(req.user.sub, parametros,{new:true}, (err, usuarioActualizado) =>{
         if (err) return res.status(500).send({mensaje:'Error en la peticion'});
         if (!usuarioActualizado) return res.status(404).send({mensaje: 'Error al Editar el Usuario'})
         return res.status(200).send({usuario: usuarioActualizado});
         
-    })
+        })
+    
 } 
+
+
+
+
+function EliminarUsuario(req,res){
+    var idUser = req.params.idUsuario;
+    if(idUser !== req.user.sub, req.user.rol !== "ADMIN") return res.status(500).send({mensaje: 'no puede eliminar otros usuarios'});
+    Usuarios.findByIdAndDelete(idUser, (err, userEliminado) =>{
+        if (err) return res.status(500).send({mensaje:'Error en la peticion'});
+        if (!userEliminado) return res.status(404).send({mensaje: 'Error al Eliminar el Usuario'})
+        return res.status(200).send({usuario: userEliminado});
+    }) 
+}
+
+function carritoAfactura(req, res){
+
+    // const facturaModel = new Factura();
+
+    /* Usuario.findById(req.user.sub, (err, usuarioEncontrado)=>{
+        
+        facturaModel.listaProductos = usuarioEncontrado.carrito;
+        facturaModel.idUsuario = req.user.sub;
+        facturaModel.totalFactura = usuarioEncontrado.totalCarrito;
+
+        for (let i = 0; i < usuarioEncontrado.carrito.length; i++) {
+            Producto.findByOneAndUpdate({nombre: usuarioEncontrado.carrito[i].nombreProducto} , 
+                {  $inc : { cantidad: usuarioEncontrado.carrito[i].cantidadComprada * -1, 
+                    vendido: usuarioEncontrado.carrito[i].cantidadComprada }})
+        }
+    }) */
+
+    Usuario.findByIdAndUpdate(req.user.sub, { $set: { carrito: [] }, totalCarrito: 0 }, { new: true }, 
+        (err, carritoVacio)=>{
+            return res.status(200).send({ usuario: carritoVacio })
+        })
+
+}
+
 
 
 
@@ -99,7 +137,8 @@ module.exports = {
     Registrar,
     Login,
     EditarUsuario,
-    //EliminarUsuario
+    EliminarUsuario,
+    carritoAfactura
 }
 
 

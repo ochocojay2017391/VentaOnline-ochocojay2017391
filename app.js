@@ -25,15 +25,15 @@ pdfDoc.end();
 //PDF
 
 const UsuarioRutas = require('./src/routes/usuario.routes');
-//const EmpresasRutas = require('./src/routes/empresas.routes');
-//const EmpleadoRutas = require('./src/routes/empleados.routes');
-//const AsignacionesRutas = require('./src/routes/asignaciones.routes');
+const CategoriasRutas = require('./src/routes/categorias.routes');
+const ProductosRutas = require('./src/routes/producto.routes');
+
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 app.use(cors());
 
-app.use('/api', UsuarioRutas /*, EmpresasRutas, EmpleadoRutas*/);
+app.use('/api', UsuarioRutas , CategoriasRutas, ProductosRutas);
 
 module.exports = app;

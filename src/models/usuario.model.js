@@ -5,7 +5,13 @@ var UsuariosSchema = Schema({
     nombre: String,
     usuario: String,
     password: String,
-    rol: String
+    rol: String, 
+    carrito: [{
+        nombreProducto: String,
+        cantidadComprada: Number,
+        precioUnitario: Number
+    }],
+    totalCarrito: Number
 });
 
 module.exports = mongoose.model('usuarios', UsuariosSchema);
