@@ -8,7 +8,9 @@ api.post('/registrar', usuariosController.Registrar);
 api.post('/login', usuariosController.Login);
 api.put('/editarUsuario/:idUsuario',md_autenticacion.Auth, usuariosController.EditarUsuario);
 api.delete('/eliminarUsuario/:idUsuario',md_autenticacion.Auth, usuariosController.EliminarUsuario);
+api.put('/agregarProductoCarrito', md_autenticacion.Auth, usuariosController.agregarProductoCarrito);
 api.put('/carritoAfactura', md_autenticacion.Auth, usuariosController.carritoAfactura);
+
 
 
 
